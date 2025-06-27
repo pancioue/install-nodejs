@@ -7,11 +7,11 @@ fnm 套件管理安裝 node 非常方便 [官方網站](https://nodejs.org/zh-tw
 各自角色安裝 fnm，node，與 npm並不會打架，這點很重要，可以用不同角色切換任意版本。
 
 ## 關於 npm install 安裝套件
-專案裡執行 `npm install` 時建議用 www 角色，避免 root
+專案裡執行 `npm install` 時建議用 www 角色，避免 root。  
 `npm install` 會載入、建立檔案，若用 root 執行，套件中的某些 install script 可取得 root 權限，造成安全風險。
 因此最好使用 www 下 `npm install`
 
-## 用www安裝完下 可能無法使用 fnm
+## 用www安裝完，可能無法使用 fnm
 * `sudo -u www fnm install 22` => sudo: fnm: command not found
 * `sudo -u www ~/.local/share/fnm/fnm ls` => sudo: /root/.local/share/fnm/fnm: command not found 會找 root 的而不是 www
 * `sudo -u www bash -c 'fnm ls'` => bash: line 1: fnm: command not found  ，www 沒吃到 .bashrc 底下的設定
@@ -19,8 +19,7 @@ fnm 套件管理安裝 node 非常方便 [官方網站](https://nodejs.org/zh-tw
 
 ## 安裝 node 
 `sudo -u www bash -c '~/.local/share/fnm/fnm install 22'`
-安裝完之後下 `sudo -u www bash -c 'node -v'` 依然會有問題
-可以在
+安裝完之後下 `sudo -u www bash -c 'node -v'` 依然會有問題，可以在
 
 __/usr/local/bin/www-node.sh__
 ```
@@ -29,8 +28,11 @@ export PATH="/home/www/.local/share/fnm:$PATH"
 eval "$(/home/www/.local/share/fnm/fnm env)"
 exec node "$@"
 ```
-之後只要下 `sudo -u www bash -c '/usr/local/bin/www-node.sh -v'` 即可
-程式中 exec('/usr/local/bin/www-node.sh /path/srcipt.js', $output, $returnVar); 即可
+之後只要下 `sudo -u www bash -c '/usr/local/bin/www-node.sh -v'` 即可  
+若在程式中 
+``` php
+exec('/usr/local/bin/www-node.sh /path/srcipt.js', $output, $returnVar);
+```
 
 ## npm install
 至於 npm install 因為大部分是一次性的，之後應該不太會用到，所以可以用偷吃步的方法就好
@@ -82,4 +84,4 @@ sudo -u www bash -c 'export PATH="$HOME/.local/share/fnm:$PATH"; eval "$(fnm env
     libasound2t64 \
     && sudo rm -rf /var/lib/apt/lists/*
   ```
-  若不處理音訊，可以省略 libasound2t64，不過也不差這個套件
+  若不處理音訊，可以省略 libasound2t64
